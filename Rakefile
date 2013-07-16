@@ -8,6 +8,12 @@ begin
 rescue LoadError
 end
 
+begin
+  require 'cucumber'
+  require 'cucumber/rake/task'
+rescue LoadError
+end
+
 namespace :test do
   desc "Interactively run through the deployment test script."
   task :manual do
@@ -333,11 +339,22 @@ namespace :test do
   end
 
   desc "Start+stop test server, and run selenium spec tests"
-  task :run do
+  task :selenium do
     begin
       Rake::Task['test:start'].invoke
       Rake::Task['spec:setup'].invoke
       Rake::Task['spec:test'].invoke
+    ensure
+      Rake::Task['test:stop'].invoke
+    end
+  end
+ 
+  desc "Start+stop test server, and run the gless tests with cucumber"
+  task :gless do |t, args|
+    begin
+      Rake::Task['test:start'].invoke
+      @cucumber.cucumber_opts = args.extras
+      Rake::Task['cucumber:test'].invoke
     ensure
       Rake::Task['test:stop'].invoke
     end
@@ -356,6 +373,14 @@ if defined?(RSpec)
     RSpec::Core::RakeTask.new(:test) do |t|
       t.rspec_opts = ['--options', "\"#{basepath}/spec/spec.opts\""]
       t.pattern = 'spec/**/*_spec.rb'
+    end
+  end
+end
+
+if defined?(Cucumber)
+  namespace:cucumber do
+    desc "Run the gless tests"
+    @cucumber = Cucumber::Rake::Task.new :test do |t|
     end
   end
 end
