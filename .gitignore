@@ -54,3 +54,4 @@ attic/*
 .Trashes/*
 .apdisk
 spec/selenium-override.rb
+gless/config/development.yml
