@@ -353,7 +353,9 @@ namespace :test do
   task :gless do |t, args|
     begin
       Rake::Task['test:start'].invoke
-      @cucumber.cucumber_opts = args.extras
+      # By default, pass 'gless/features' to cucumber unless
+      # CUCUMBER_OPTS_ALLOW_EMPTY is set in the environment.
+      @cucumber.cucumber_opts = (ENV['CUCUMBER_OPTS_ALLOW_EMPTY'] || !args.extras.empty?) ? args.extras : ['gless/features']
       Rake::Task['cucumber:test'].invoke
     ensure
       Rake::Task['test:stop'].invoke
