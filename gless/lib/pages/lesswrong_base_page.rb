@@ -1,4 +1,4 @@
-module LessWrong
+module Lesswrong
   class BasePage < Gless::BasePage
     # user_div iff !login_div
     element :user_div,  :div, id: 'side-user', child: :logout, validator: false  #FIXME: duplicate ids when viewing other user logged in; workaround by restricting by child.
@@ -6,8 +6,11 @@ module LessWrong
 
     # Logged in
     userlink_regexp = %r{^/user/(.*)}
-    element :userlink,      :link, href: userlink_regexp, parent: :user_div, validator: false
-    element :logout_button, :link, href: %r{/logout/?$}, click_destination: HomePage, validator: false
+    element :userlink,              :link, href: userlink_regexp, parent: :user_div, validator: false
+    element :logout_button,         :link, href: %r{/logout/?$}, click_destination: :HomePage, validator: false
+    element :admin_toggle_button,   :link, href: %r{/admino(n|ff)/?$}, validator: false
+
+    element :create_article_button, :link, href: %r{/submit/?$}, click_destination: :WriteArticlePage, validator: false
 
     # Not logged in
     element :username,        :text_field, id: 'username', validator: false
@@ -61,6 +64,7 @@ module LessWrong
       password_reg.set username
       password2_reg.set username
       register_button.click
+      reg_close.wait_while_present 10
 
       if reg_popup_open?
         @session.log.warn "register: registration failed.  Trying to log in before failing..." if warn_already_registered
@@ -79,6 +83,19 @@ module LessWrong
 
     def reg_popup_open?
       reg_popup.exists? and reg_popup.style !~ /\bdisplay:\s*none(;|\b)/
+    end
+
+    # Toggle admin, or set to +override+ if non-nil.
+    def toggle_admin override = nil
+      admin_toggle_button.click if override.nil? || admin_on? != override
+    end
+
+    def has_admin?
+      admin_toggle_button.exists?
+    end
+
+    def admin_on?
+      has_admin? && !!(admin_toggle_button.href =~ /off/)
     end
   end
 end

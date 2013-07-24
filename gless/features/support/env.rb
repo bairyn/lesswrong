@@ -4,6 +4,11 @@ require 'rspec/expectations'
 World(RSpec::Matchers)
 World(RSpec::Expectations)
 
+require_relative 'config.rb'
+World(LesswrongUtil::Config)
+require_relative 'server.rb'
+World(LesswrongUtil::Server)
+
 Env_overrides =
   [ ['GE_SERVER',  :server, :url],
     ['GE_PORT',    :global, :browser, :port],

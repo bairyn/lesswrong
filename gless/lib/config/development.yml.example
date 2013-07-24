@@ -1,6 +1,6 @@
 :global: # This tag distinguishes the global config from the per-test configs; *do not remove*
   :site:
-    :class: LessWrong
+    :class: Lesswrong
     :url: http://lesswrong.local:8743
   :browser:
     :type: remote		# Local or remote
