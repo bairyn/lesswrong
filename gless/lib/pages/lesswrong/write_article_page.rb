@@ -9,7 +9,7 @@ module Lesswrong
 
     element :title,   :text_field,  id: 'title', cache:false, validator: true
     element :medium,  :select_list, id: 'sr', cache:false, validator: true
-    element :submit,  :button,      type: 'submit', value: 'Submit', click_destination: :ArticlePage, cache:false, validator: true
+    element :submit,  :button,      type: 'submit', value: 'Submit', click_destination: :ArticlePage, cache: false, validator: true
     element :article, :frame,       id: 'article_ifr', cache: false
 
     element :_article_body, :body, parent: :article, cache: false, validator: false
@@ -26,7 +26,7 @@ module Lesswrong
       rescue Watir::Exception::NoValueFoundException => e
         raise "WriteArticlePage#create_article: The post medium was not found.  Is the karma configuration for testing correct?  The available options are '#{self.medium.options.map &:text}'.  #{e.inspect}"
       end
-      self.submit.click_once true  # Element no longer exists as modeled after the first click; use click_once and change_pages.
+      self.submit.click_once(true) {sleep 1}  # Element no longer exists as modeled after the first click; use click_once(true).
     end
 
     def with_article_body

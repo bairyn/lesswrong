@@ -1,14 +1,16 @@
 module Lesswrong
   class BasePage < Gless::BasePage
     # user_div iff !login_div
-    element :user_div,  :div, id: 'side-user', child: :logout_button, validator: false  #FIXME: duplicate ids when viewing other user logged in; workaround by restricting by child.
+    element :user_div,  :div, id: 'side-user', child: :logout_button, cache: false, validator: false  #FIXME: duplicate ids when viewing other user logged in; workaround by restricting by child.
     element :login_div, :div, id: 'side-login', validator: false
 
     # Logged in
     Userlink_regexp = %r{/user/(.*)$}
     element :userlink,              :link, href: Userlink_regexp, parent: :user_div, validator: false
+	element :preferences,           :link, href: %r{/prefs/?$}, click_destination: :PreferencesPage, validator: false
     element :logout_button,         :link, href: %r{/logout/?$}, click_destination: :HomePage, validator: false
     element :admin_toggle_button,   :link, href: %r{/admino(n|ff)/?$}, validator: false
+	element :extra_userinfo_list,   :dl,   class: 'extrainfo', parent: :user_div, cache: false, validator: false
 
     element :create_article_button, :link, href: %r{/submit/?$}, click_destination: :WriteArticlePage, validator: false  # (Not present on all pages.)
 

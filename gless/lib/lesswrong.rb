@@ -53,7 +53,7 @@ module Lesswrong
       end
     end
 
-    # Create an article and submit it to +medium+, unless with the given title
+    # Create an article and submit it to +medium+, unless the article with the given title
     # has already been created.
     #
     # Alternatively, if only +title+ is passed, assert that the article exists
@@ -64,6 +64,18 @@ module Lesswrong
         (@session.create_article_button.exists?) ? @session.create_article_button.click : @session.enter(Lesswrong::WriteArticlePage)
         @session.create_article title, body, medium
       end
+    end
+
+    def goto_preferences
+      @session.logged_in?.should be_true
+      @session.preferences.exists?.should be_true
+      @session.preferences.click unless @session.current_page == PreferencesPage
+    end
+
+    def delete_account! confirmation = 'No way.'
+      goto_preferences
+      @session.delete.click
+      @session.delete_my_account! confirmation
     end
 
     private
