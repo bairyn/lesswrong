@@ -1,4 +1,5 @@
-load 'gless/lib/startup.rb'
+$: << "#{File.expand_path '../../lib', File.dirname(__FILE__)}"
+load 'startup.rb'
 
 require 'rspec/expectations'
 World(RSpec::Matchers)
@@ -84,6 +85,10 @@ else
       end
 
       start_test_framework
+
+      $logger, $config, $browser, $application = @logger, @config, @browser, @application
     end
+
+    @logger, @config, @browser, @application = $logger, $config, $browser, $application
   end
 end
