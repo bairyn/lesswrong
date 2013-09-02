@@ -8,7 +8,7 @@ module Lesswrong
 
     element :location, :text_field, name: 'location', validator: true
     element :submit,   :button,     type: 'submit', value: 'Save options', click_destination: :PreferencesPage, validator: true
-    element :delete,   :link,       href: %r{/prefs/delete/?$}, text: 'DELETE', click_destination: :DeleteAccountPage
+    element :delete,   :link,       href: %r{/prefs/delete/?$}, text: 'Delete', click_destination: :DeleteAccountPage
 
     def update_location location
       self.location.set location

@@ -2,7 +2,7 @@ module Lesswrong
   class BasePage < Gless::BasePage
     # user_div iff !login_div
     element :user_div,  :div, id: 'side-user', child: :logout_button, cache: false, validator: false  #FIXME: duplicate ids when viewing other user logged in; workaround by restricting by child.
-    element :login_div, :div, id: 'side-login', validator: false
+    element :login_div, :div, id: 'side-login', cache: false, validator: false
 
     # Logged in
     Userlink_regexp = %r{/user/(.*)$}
