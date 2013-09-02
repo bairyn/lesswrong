@@ -6,25 +6,25 @@ module Lesswrong
 
     # Logged in
     Userlink_regexp = %r{/user/(.*)$}
-    element :userlink,              :link, href: Userlink_regexp, parent: :user_div, validator: false
-    element :preferences,           :link, href: %r{/prefs/?$}, click_destination: :PreferencesPage, validator: false
-    element :logout_button,         :link, href: %r{/logout/?$}, click_destination: :HomePage, validator: false
-    element :admin_toggle_button,   :link, href: %r{/admino(n|ff)/?$}, validator: false
+    element :userlink,              :link, href: Userlink_regexp, parent: :user_div, cache: false, validator: false
+    element :preferences,           :link, href: %r{/prefs/?$}, click_destination: :PreferencesPage, cache: false, validator: false
+    element :logout_button,         :link, href: %r{/logout/?$}, click_destination: :HomePage, cache: false, validator: false
+    element :admin_toggle_button,   :link, href: %r{/admino(n|ff)/?$}, cache: false, validator: false
     element :extra_userinfo_list,   :dl,   class: 'extrainfo', parent: :user_div, cache: false, validator: false
 
-    element :create_article_button, :link, href: %r{/submit/?$}, click_destination: :WriteArticlePage, validator: false  # (Not present on all pages.)
+    element :create_article_button, :link, href: %r{/submit/?$}, click_destination: :WriteArticlePage, cache: false, validator: false  # (Not present on all pages.)
 
     # Not logged in
-    element :username,        :text_field, id: 'username', validator: false
-    element :password,        :text_field, id: 'password', validator: false
-    element :login_button,    :button,     type: 'submit', text: 'Login', parent: :login_div, validator: false
-    element :register_link,   :link,       text: 'Register', validator: false
-    element :user_reg,        :text_field, id: 'user_reg', validator: false, cache: false
-    element :password_reg,    :text_field, id: 'passwd_reg', validator: false, cache: false
-    element :password2_reg,   :text_field, id: 'passwd2_reg', validator: false, cache: false
-    element :register_button, :button,     text: 'Create account', validator: false, cache: false
-    element :reg_popup,       :div,        id: 'loginpopup', validator: false, cache: false
-    element :reg_close ,      :link,       text: 'Close this window', validator: false, cache: false
+    element :username,        :text_field, id: 'username', cache: false, validator: false
+    element :password,        :text_field, id: 'password', cache: false, validator: false
+    element :login_button,    :button,     type: 'submit', cache: false, text: 'Login', parent: :login_div, validator: false
+    element :register_link,   :link,       text: 'Register', cache: false, validator: false
+    element :user_reg,        :text_field, id: 'user_reg', cache: false, validator: false, cache: false
+    element :password_reg,    :text_field, id: 'passwd_reg', cache: false, validator: false, cache: false
+    element :password2_reg,   :text_field, id: 'passwd2_reg', cache: false, validator: false, cache: false
+    element :register_button, :button,     text: 'Create account', cache: false, validator: false, cache: false
+    element :reg_popup,       :div,        id: 'loginpopup', cache: false, validator: false, cache: false
+    element :reg_close ,      :link,       text: 'Close this window', cache: false, validator: false, cache: false
 
     # @return [String, NilClass] The username if logged in; nil otherwise.
     def logged_in_as
