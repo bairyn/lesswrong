@@ -7,10 +7,10 @@ module Lesswrong
     # Logged in
     Userlink_regexp = %r{/user/(.*)$}
     element :userlink,              :link, href: Userlink_regexp, parent: :user_div, validator: false
-	element :preferences,           :link, href: %r{/prefs/?$}, click_destination: :PreferencesPage, validator: false
+    element :preferences,           :link, href: %r{/prefs/?$}, click_destination: :PreferencesPage, validator: false
     element :logout_button,         :link, href: %r{/logout/?$}, click_destination: :HomePage, validator: false
     element :admin_toggle_button,   :link, href: %r{/admino(n|ff)/?$}, validator: false
-	element :extra_userinfo_list,   :dl,   class: 'extrainfo', parent: :user_div, cache: false, validator: false
+    element :extra_userinfo_list,   :dl,   class: 'extrainfo', parent: :user_div, cache: false, validator: false
 
     element :create_article_button, :link, href: %r{/submit/?$}, click_destination: :WriteArticlePage, validator: false  # (Not present on all pages.)
 
@@ -57,6 +57,9 @@ module Lesswrong
     # Register, setting the password to the username, skipping if already
     # signed in to the username provided.  If registration fails, emit a
     # warning if +warn_already_registered+ is true and attempt to log in instead.
+    #
+    # TODO: remember sign-ins, sign-outs, deletes, etc. to avoid trying to
+    # register an account each time one is required.
     def register username, warn_already_registered = true
       return if logged_in_as == username
       logout true
@@ -66,7 +69,10 @@ module Lesswrong
       password_reg.set username
       password2_reg.set username
       register_button.click
-      reg_close.wait_while_present 10
+      begin
+        reg_close.wait_while_present 5
+      rescue Watir::Wait::TimeoutError => e
+      end
 
       if reg_popup_open?
         @session.log.warn "register: registration failed.  Trying to log in before failing..." if warn_already_registered
