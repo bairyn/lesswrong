@@ -42,8 +42,12 @@ module Lesswrong
     # Create the given category.   If the category has already been created,
     # skip.  The browser should remain on the create_category page after
     # creation.
-    def require_category name, title, type, default_listing
+    #
+    # Alternatively, if only +name+ is passed, assert that the article exists
+    # and raise an exception otherwise.
+    def require_category name, title = nil, type = nil, default_listing = nil
       require_with (@categories_created ||= {}), name do
+        raise 'Lesswrong::Application#require_category: no title, type, or default_listing provided.' if [title, type, default_listing].any? &:nil?
         @session.enter CreateCategoryPage
         @session.create_category name, title, type, default_listing
       end
@@ -51,8 +55,12 @@ module Lesswrong
 
     # Create an article and submit it to +medium+, unless with the given title
     # has already been created.
-    def require_article title, body, medium
+    #
+    # Alternatively, if only +title+ is passed, assert that the article exists
+    # and raise an exception otherwise.
+    def require_article title, body = nil, medium = nil
       require_with (@articles_created ||= {}), title do
+        raise 'Lesswrong::Application#require_article: no body or medium provided.' if [body, medium].any? &:nil?
         (@session.create_article_button.exists?) ? @session.create_article_button.click : @session.enter(Lesswrong::WriteArticlePage)
         @session.create_article title, body, medium
       end

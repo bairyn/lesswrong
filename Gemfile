@@ -11,5 +11,6 @@ gem 'capybara'
 gem 'selenium-webdriver'
 gem 'rspec'
 gem 'cucumber'
-gem 'gless'
+gem 'gless', '>= 1.3.1'
+gem 'debugger'
 

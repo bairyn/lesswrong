@@ -5,8 +5,6 @@ module Lesswrong
     url %r{^:base_url/?$}
     set_entry_url ':base_url'
 
-    expected_title 'Welcome to Less Wrong'
-
-    # TODO: more
+    expected_title %r{(Welcome to )?Less Wrong}
   end
 end

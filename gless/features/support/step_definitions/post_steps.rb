@@ -1,10 +1,5 @@
 # Step definitions for the post feature.
 
-Given /^the user '(.*)'$/ do |username|
-  @application.register username, false
-  @application.toggle_admin true if username == 'admin'
-end
-
 Given 'the initial site configuration' do
   include LesswrongUtil::Config
 
@@ -16,4 +11,17 @@ Given 'the initial site configuration' do
   @application.require_article 'The ABOUT article', about_post_body, 'Less Wrong'
 
   configure_discussion
+end
+
+When /^I post '(.*)' to '(Less Wrong|Less Wrong Discussion)' with content '(.*)'$/ do |title, category, content|
+  @application.require_article title, content, category
+end
+
+Then /^the article should contain '(.*)'$/ do |content|
+  @application.current_page.should == Lesswrong::ArticlePage
+  @application.get_content.should =~ Regexp.new(Regexp.escape(content))
+end
+
+Then /^I should be in the category '(.*)'$/ do |category|
+  @application.get_category.should == category
 end

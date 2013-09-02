@@ -7,18 +7,32 @@ module Lesswrong
 
     expected_title 'Submit Article - Less Wrong'
 
-    element :title,   :text_field,  id: 'title', validator: true
-    element :medium,  :select_list, id: 'sr', validator: true
-    element :submit,  :button,      type: 'submit', value: 'Submit', click_destination: :ArticlePage, validator: true
-    element :article, :frame,       id: 'article_ifr'
+    element :title,   :text_field,  id: 'title', cache:false, validator: true
+    element :medium,  :select_list, id: 'sr', cache:false, validator: true
+    element :submit,  :button,      type: 'submit', value: 'Submit', click_destination: :ArticlePage, cache:false, validator: true
+    element :article, :frame,       id: 'article_ifr', cache: false
 
-    element :article_body, :body, parent: :article, validator: true
+    element :_article_body, :body, parent: :article, cache: false, validator: false
 
     def create_article title, body, medium
       self.title.set title
-      self.article_body.send_keys body
-      self.medium.select medium
-      self.submit.click_once
+
+      with_article_body do |article_body|
+        article_body.send_keys body
+      end
+
+      begin
+        self.medium.select medium
+      rescue Watir::Exception::NoValueFoundException => e
+        raise "WriteArticlePage#create_article: The post medium was not found.  Is the karma configuration for testing correct?  The available options are '#{self.medium.options.map &:text}'.  #{e.inspect}"
+      end
+      self.submit.click_once true  # Element no longer exists as modeled after the first click; use click_once and change_pages.
+    end
+
+    def with_article_body
+      self._article_body.focus
+      yield self._article_body
+      self.title.focus
     end
   end
 end

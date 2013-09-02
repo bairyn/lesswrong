@@ -4,7 +4,13 @@ Feature: Less Wrong posting
     Given the user 'admin'
       And the initial site configuration
 
-  Scenario: TODO
-    Given TODO
-    When  TODO
-    Then  TODO
+  Scenario: A user posts an article
+    Given the user 'Candace_Spencer'
+    When  I post 'To seek it with thimbles, to seek it with care' to 'Less Wrong' with content 'To pursue it with forks and hope'
+    Then  the article should contain 'sue'
+	  And I should be in the category 'Less Wrong'
+
+    Given the user 'Candace_Spencer'
+    When  I post 'To threaten its life with a railway-share' to 'Less Wrong Discussion' with content 'To charm it with smiles and soap!'
+    Then  the article should contain 'smiles'
+	  And I should be in the category 'Less Wrong Discussion'

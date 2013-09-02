@@ -1,16 +1,16 @@
 module Lesswrong
   class BasePage < Gless::BasePage
     # user_div iff !login_div
-    element :user_div,  :div, id: 'side-user', child: :logout, validator: false  #FIXME: duplicate ids when viewing other user logged in; workaround by restricting by child.
+    element :user_div,  :div, id: 'side-user', child: :logout_button, validator: false  #FIXME: duplicate ids when viewing other user logged in; workaround by restricting by child.
     element :login_div, :div, id: 'side-login', validator: false
 
     # Logged in
-    userlink_regexp = %r{^/user/(.*)}
-    element :userlink,              :link, href: userlink_regexp, parent: :user_div, validator: false
+    Userlink_regexp = %r{/user/(.*)$}
+    element :userlink,              :link, href: Userlink_regexp, parent: :user_div, validator: false
     element :logout_button,         :link, href: %r{/logout/?$}, click_destination: :HomePage, validator: false
     element :admin_toggle_button,   :link, href: %r{/admino(n|ff)/?$}, validator: false
 
-    element :create_article_button, :link, href: %r{/submit/?$}, click_destination: :WriteArticlePage, validator: false
+    element :create_article_button, :link, href: %r{/submit/?$}, click_destination: :WriteArticlePage, validator: false  # (Not present on all pages.)
 
     # Not logged in
     element :username,        :text_field, id: 'username', validator: false
@@ -26,7 +26,7 @@ module Lesswrong
 
     # @return [String, NilClass] The username if logged in; nil otherwise.
     def logged_in_as
-      (login_div.exists?) ? nil : userlink.text[userlink_regexp]
+      (login_div.exists?) ? nil : userlink.text
     end
 
     # @return [Boolean] Whether the user is currently logged in.  Approximate
