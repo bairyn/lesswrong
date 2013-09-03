@@ -10,7 +10,8 @@ require 'gless'
 Gless::EnvConfig.env_dir = File.dirname(__FILE__)
 
 require 'pages/lesswrong_base_page'
-Dir["#{File.dirname(__FILE__)}/pages/*/*_page.rb"].each {|r| load r }
 Dir["#{File.dirname(__FILE__)}/pages/*_page.rb"].each {|r| load r }
+Dir["#{File.dirname(__FILE__)}/pages/*/*_page.rb"].each {|r| load r }
+Dir["#{File.dirname(__FILE__)}/pages/*/*/*_page.rb"].each {|r| load r }
 
 require 'lesswrong'

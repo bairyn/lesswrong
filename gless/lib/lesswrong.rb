@@ -78,6 +78,11 @@ module Lesswrong
       @session.delete_my_account! confirmation
     end
 
+    def open_article title, must_open = true
+      on_home
+      @session.open_article title, must_open
+    end
+
     private
 
     def require_with table, id
