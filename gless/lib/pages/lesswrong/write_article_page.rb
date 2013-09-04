@@ -27,6 +27,10 @@ module Lesswrong
         raise "WriteArticlePage#create_article: The post medium was not found.  Is the karma configuration for testing correct?  The available options are '#{self.medium.options.map &:text}'.  #{e.inspect}"
       end
       self.submit.click_once(true) {sleep 1}  # Element no longer exists as modeled after the first click; use click_once(true).
+      sleep 6
+      if @session.current_page == WriteArticlePage && self.submit.exists?
+        self.submit.click_once(true) {sleep 1}
+      end
     end
 
     def with_article_body

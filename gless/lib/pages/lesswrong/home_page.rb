@@ -36,8 +36,8 @@ module Lesswrong
     end
 
     def open_article_sub title, must_open = true
-      self.class::Subnavs.each {|sym| send(sym).click; break true if open_article_current_category title} ||
-        self.class::Subnavs_loggedin.each {|sym| send(sym).click; break true if open_article_current_category title} ||
+      self.class::Subnavs.each {|sym| send(sym).click; sleep 6; break true if open_article_current_category title} == true ||
+        self.class::Subnavs_loggedin.each {|sym| send(sym).click; sleep 6; break true if open_article_current_category title} == true ||
         false
     end
 
@@ -49,7 +49,8 @@ module Lesswrong
       else
         matches[0].click
         @session.acceptable_pages = :ArticlePage
-        @session.change_pages Lesswrong::ArticlePage
+        #@session.change_pages Lesswrong::ArticlePage
+        sleep 6
         return true
       end
     end

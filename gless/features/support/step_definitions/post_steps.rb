@@ -5,7 +5,7 @@ When /^I post '(.*)' to '(Less Wrong|Less Wrong Discussion)' with content '(.*)'
 end
 
 Then /^the article should contain '(.*)'$/ do |content|
-  @application.current_page.should == Lesswrong::ArticlePage
+  #@application.current_page.should == Lesswrong::ArticlePage
   @application.get_content.should =~ Regexp.new(Regexp.escape(content))
 end
 
@@ -29,4 +29,18 @@ end
 
 When /^I open the post '(.*)'$/ do |title|
   @application.open_article title
+end
+
+Given /^I'm on the post '(.*)'$/ do |title|
+  @application.open_article title
+end
+
+When 'I up-vote the article' do
+  #@application.current_page.should == Lesswrong::ArticlePage
+  @application.upvote_post
+  sleep 6
+end
+
+Then /^the article should have '(\d+)' votes? if unhidden$/ do |votes|
+  @application.post_votes.should == votes.to_i if @application.post_div.votes.exists?
 end

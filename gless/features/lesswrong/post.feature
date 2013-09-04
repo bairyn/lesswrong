@@ -22,3 +22,9 @@ Feature: Less Wrong posting
       And the categories are available
     When  I open the post 'To seek it with thimbles, to seek it with care'
     Then  the article should contain 'hope'
+
+  Scenario: A user up-votes an article
+    Given the user 'Summer_Holiday'
+      And I'm on the post 'To threaten its life with a railway-share'
+    When  I up-vote the article
+    Then  the article should have '1' vote if unhidden
