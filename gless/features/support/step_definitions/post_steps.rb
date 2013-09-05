@@ -44,3 +44,12 @@ end
 Then /^the article should have '(\d+)' votes? if unhidden$/ do |votes|
   @application.post_votes.should == votes.to_i if @application.post_div.votes.exists?
 end
+
+When /^I comment '(.*)'$/ do |content|
+  @application.post_comment content
+end
+
+Then /^a comment should contain '(.*)'$/ do |content|
+  #@application.current_page.should == Lesswrong::ArticlePage
+  @application.comment_bodies.any?(){|body_div| body_div.text =~ Regexp.new(Regexp.escape(content))}.should be_true
+end

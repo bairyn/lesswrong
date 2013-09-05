@@ -28,3 +28,9 @@ Feature: Less Wrong posting
       And I'm on the post 'To threaten its life with a railway-share'
     When  I up-vote the article
     Then  the article should have '1' vote if unhidden
+
+  Scenario: A user comments
+    Given the user 'foo'
+      And I'm on the post 'To seek it with thimbles, to seek it with care'
+    When  I comment 'bar'
+    Then  a comment should contain 'bar'
