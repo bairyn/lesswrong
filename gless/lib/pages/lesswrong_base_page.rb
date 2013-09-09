@@ -8,6 +8,7 @@ module Lesswrong
     Userlink_regexp = %r{/user/(.*)$}
     element :userlink,              :link, href: Userlink_regexp, parent: :user_div, cache: false, validator: false
     element :preferences,           :link, href: %r{/prefs/?$}, click_destination: :PreferencesPage, cache: false, validator: false
+    element :new_meetup_button,     :link, href: %r{/meetups/new/?$}, click_destination: :NewMeetupPage, cache: false, validator: false
     element :logout_button,         :link, href: %r{/logout/?$}, click_destination: :HomePage, cache: false, validator: false
     element :admin_toggle_button,   :link, href: %r{/admino(n|ff)/?$}, cache: false, validator: false
     element :extra_userinfo_list,   :dl,   class: 'extrainfo', parent: :user_div, cache: false, validator: false

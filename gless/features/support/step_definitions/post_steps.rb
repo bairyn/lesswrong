@@ -53,3 +53,17 @@ Then /^a comment should contain '(.*)'$/ do |content|
   #@application.current_page.should == Lesswrong::ArticlePage
   @application.comment_bodies.any?(){|body_div| body_div.text =~ Regexp.new(Regexp.escape(content))}.should be_true
 end
+
+Given "I'm on the home page" do
+  @application.on_home
+end
+
+When /^I add meetup '(.*)' at '(.*)' with description '(.*)'$/ do |title, location, description|
+  @application.on_home
+  @application.new_meetup_button.click
+  @application.add_meetup title, location, description
+end
+
+Then 'I am on a meetup page' do
+  @application.session.current_page.should == Lesswrong::MeetupPage
+end

@@ -34,3 +34,8 @@ Feature: Less Wrong posting
       And I'm on the post 'To seek it with thimbles, to seek it with care'
     When  I comment 'bar'
     Then  a comment should contain 'bar'
+
+  Scenario: A user creates a meetup
+    Given the user 'Summer_Beach'
+    When  I add meetup 'foo' at 'Nantucket' with description 'bar'
+    Then  I am on a meetup page
